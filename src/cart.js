@@ -98,7 +98,7 @@ function escape(value) {
 }
 
 function renderLine(row) {
-  const { id, quantity, product, unitCents, estimate } = row;
+  const { id, quantity, product, unitCents } = row;
   const name = escape(product?.name || 'Produto indisponível');
   const photo = product ? productImages(product)[0] : null;
   const url = product ? `/produto/${encodeURIComponent(id)}/` : null;
@@ -109,12 +109,15 @@ function renderLine(row) {
     ? `<a href="${url}" class="cart-line-photo" aria-label="Ver ${name}">${visual}</a>`
     : `<span class="cart-line-photo" aria-hidden="true">${visual}</span>`;
   const canChange = unitCents !== null;
+  const unitLabel = canChange
+    ? `${formatPrice(unitCents / 100)} por unidade`
+    : product?.available ? 'Preço a confirmar' : 'Produto indisponível';
 
   return `<li class="cart-line">
     ${media}
     <div class="cart-line-details">
       ${url ? `<a href="${url}" class="cart-line-name">${name}</a>` : `<strong class="cart-line-name">${name}</strong>`}
-      <p class="cart-line-unit">${canChange ? `${formatPrice(unitCents / 100)} por unidade${estimate ? ' · Referência' : ''}` : 'Valor indisponível'}</p>
+      <p class="cart-line-unit">${unitLabel}</p>
       <div class="cart-line-controls">
         ${canChange ? `<label class="cart-quantity">
           <span>Qtd.</span>
@@ -144,23 +147,21 @@ export function renderCart(items, productsById, { loading = false } = {}) {
 
   const rows = entries.map(item => {
     const product = productsById.get(item.id);
-    const pricing = product ? productCatalogPrice(product) : null;
-    const unitCents = toCents(pricing?.price);
-    return { ...item, product, unitCents, estimate: unitCents !== null && pricing.reference };
+    const unitCents = product ? toCents(productCatalogPrice(product)?.price) : null;
+    return { ...item, product, unitCents };
   });
   const subtotal = rows.reduce((sum, { unitCents, quantity }) => sum + (unitCents ?? 0) * quantity, 0);
-  const estimated = rows.some(row => row.estimate);
   const unavailable = rows.some(row => row.unitCents === null);
 
   return `<div class="cart-panel">
     <ul class="cart-lines" aria-label="Itens no carrinho">${rows.map(renderLine).join('')}</ul>
     <footer class="cart-summary">
       <div class="cart-summary-total">
-        <span>${estimated ? 'Subtotal estimado' : 'Subtotal'}</span>
+        <span>Subtotal</span>
         <strong aria-live="polite">${formatPrice(subtotal / 100)}</strong>
       </div>
-      ${estimated ? '<p>Valores de referência, sujeitos a confirmação. Frete à parte.</p>' : ''}
-      ${unavailable ? '<p>Os itens sem valor aparecem no carrinho e ficam fora do subtotal.</p>' : ''}
+      ${subtotal > 0 ? '<p>Frete informado na finalização da compra.</p>' : ''}
+      ${unavailable ? '<p>Itens com preço ou disponibilidade a confirmar ficam fora do subtotal.</p>' : ''}
       <button class="button cart-checkout" type="button" disabled>Finalizar compra</button>
       <p class="cart-checkout-status">Pagamento online ainda indisponível.</p>
     </footer>

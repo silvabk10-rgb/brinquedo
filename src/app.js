@@ -83,13 +83,17 @@ function productCard(product) {
     ? `<img src="${escape(image.url)}" alt="" width="560" height="560" loading="lazy" decoding="async" referrerpolicy="no-referrer">${placeholder}`
     : placeholder;
   return `<article class="product-card">
-    <a class="product-media reference-media${image ? '' : ' is-missing'}" href="${href}" aria-label="Ver ${name}">${photo}</a>
-    ${favoriteButton(product)}
+    <div class="product-visual">
+      <a class="product-media${image ? '' : ' is-missing'}" href="${href}" aria-label="Ver ${name}">${photo}</a>
+      ${product.available ? '<p class="card-stock">Pronta entrega</p>' : ''}
+      ${favoriteButton(product)}
+    </div>
     <div class="product-copy">
       <p class="product-meta">${escape(meta)}</p>
       <h3 class="product-name"><a href="${href}">${name}</a></h3>
-      ${offer ? `<div class="card-pricing"><strong>${formatPrice(offer.price)}</strong>${offer.reference ? '<small>Preço de referência</small>' : ''}</div>` : '<p class="card-pricing card-pricing-pending">Preço a confirmar</p>'}
-      <a class="button outline" href="${href}">Ver produto</a>
+      ${offer ? `<div class="card-pricing"><strong>${formatPrice(offer.price)}</strong></div>
+      <button class="button card-action" type="button" data-action="cart-add" data-id="${escape(product.id)}" aria-label="Adicionar ${name} ao carrinho">${icon('bag')} Adicionar</button>` : '<p class="card-pricing card-pricing-pending">Preço a confirmar</p>'}
+      ${offer ? '' : `<a class="button outline" href="${href}">Ver produto</a>`}
     </div>
   </article>`;
 }
@@ -337,11 +341,23 @@ function showCompany() {
     ['CNPJ', storeInfo.cnpj],
     ['Razão social', storeInfo.legalName],
     ['Endereço', storeInfo.address],
-    ['E-mail', storeInfo.email],
-    ['WhatsApp', storeInfo.whatsapp],
+    ['Telefone', storeInfo.phone],
+    ...storeInfo.emails.map(email => ['E-mail', email]),
   ].filter(([, value]) => value);
   showDialog('Dados da loja', `<dl>${lines.map(([label, value]) => `<div class="company-line"><dt>${label}</dt><dd>${escape(value)}</dd></div>`).join('')}</dl>
     <a href="/#politica/termos" data-action="close">Consultar termos de uso</a>`, 'company');
+}
+
+function renderFooterContact() {
+  const phone = storeInfo.phoneInternational;
+  const phoneLink = /^\+\d{10,15}$/.test(phone)
+    ? `<a href="tel:${phone}" aria-label="Ligar para ${escape(storeInfo.phone)}">${escape(storeInfo.phone)}</a>` : '';
+  const emailLinks = storeInfo.emails.filter(email => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+    .map(email => `<a href="mailto:${escape(email)}">${escape(email)}</a>`);
+  $('#footer-contacts').innerHTML = [phoneLink, ...emailLinks].join('');
+  const address = $('#footer-address');
+  address.textContent = storeInfo.address || '';
+  address.hidden = !storeInfo.address;
 }
 
 function updateFavoriteControls(id) {
@@ -362,14 +378,11 @@ async function fetchJson(path) {
 
 function productDetails(product, details) {
   const data = Object.hasOwn(details, product.id) ? details[product.id] : null;
-  const price = Number.isFinite(data?.referencePrice) && data.referencePrice > 0 ? data.referencePrice : product.referencePrice;
   return {
     ...product,
-    referencePrice: price,
     photos: productImages({ ...product, photos: data?.photos }),
     description: data?.description,
     specifications: data?.specifications,
-    galleryUrl: data?.galleryUrl,
     price: data?.price,
     available: data?.available,
     checkoutUrl: data?.checkoutUrl,
@@ -497,6 +510,7 @@ function setFilterPanel() {
 
 compact.addEventListener('change', setFilterPanel);
 setFilterPanel();
+renderFooterContact();
 initFilters();
 updateCounts();
 renderRoute({ focus: Boolean(location.hash) });

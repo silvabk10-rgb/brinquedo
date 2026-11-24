@@ -32,48 +32,40 @@ export function productImages(product) {
     const alt = typeof photo?.alt === 'string' && photo.alt.trim()
       ? photo.alt.trim()
       : `${product.name} · Foto ${photos.size + 1}`;
-    const credit = typeof photo?.credit === 'string' ? photo.credit.trim() : '';
-    photos.set(url, { url, alt, credit });
+    photos.set(url, { url, alt });
   }
   return [...photos.values()];
 }
 
 export function productOffer(product) {
-  const price = product.price;
+  const pricing = productCatalogPrice(product);
   const checkoutUrl = httpsUrl(product.checkoutUrl);
-  if (product.available !== true || !checkoutUrl || !Number.isFinite(price) || price <= 0) return null;
+  if (!checkoutUrl || !pricing) return null;
 
-  return { price, checkoutUrl };
+  return { ...pricing, checkoutUrl };
 }
 
 export function productCatalogPrice(product) {
-  const offer = productOffer(product);
-  if (offer) return { price: offer.price, reference: false };
-  const price = product.referencePrice;
-  return Number.isFinite(price) && price > 0 ? { price, reference: true } : null;
+  const price = product.price;
+  return product.available === true && Number.isFinite(price) && price > 0 ? { price } : null;
 }
 
 function icon(id) {
   return `<svg aria-hidden="true" focusable="false"><use href="#${id}"/></svg>`;
 }
 
-function renderGallery(product, sourceUrl) {
+function renderGallery(product) {
   const photos = productImages(product);
   if (!photos.length) {
-    const manufacturerGallery = httpsUrl(product.galleryUrl);
-    const galleryUrl = manufacturerGallery || sourceUrl;
-    const label = manufacturerGallery ? 'Ver fotos do fabricante' : 'Ver fotos na referência';
     return `<div class="product-gallery"><div class="gallery-main gallery-placeholder">
-      ${icon('box')}${galleryUrl
-        ? `<a href="${escape(galleryUrl)}" target="_blank" rel="noopener noreferrer">${label}</a>`
-        : '<span>Fotos em breve</span>'}
+      ${icon('box')}<span>Fotos em breve</span>
     </div></div>`;
   }
 
   const firstPhoto = photos[0];
   const thumbnails = photos.length > 1 ? `<div class="gallery-thumbs" aria-label="Fotos do produto">
-    ${photos.map(({ url, alt, credit }, index) => `<button class="gallery-thumb" type="button" data-action="gallery"
-        data-index="${index}" data-alt="${escape(alt)}" data-credit="${escape(credit)}"
+    ${photos.map(({ url, alt }, index) => `<button class="gallery-thumb" type="button" data-action="gallery"
+        data-index="${index}" data-alt="${escape(alt)}"
         aria-label="Ver foto ${index + 1} de ${photos.length}" aria-pressed="${index === 0}">
       <img src="${escape(url)}" alt="" width="68" height="68" loading="lazy" decoding="async" referrerpolicy="no-referrer">
     </button>`).join('')}
@@ -86,7 +78,6 @@ function renderGallery(product, sourceUrl) {
       <span class="gallery-zoom-icon" aria-hidden="true">${icon('search')}</span>
       <span class="gallery-failed" hidden>Foto temporariamente indisponível</span>
     </button>
-    <p class="gallery-credit" data-gallery-credit ${firstPhoto.credit ? '' : 'hidden'}>${escape(firstPhoto.credit)}</p>
     ${thumbnails}
   </div>`;
 }
@@ -102,11 +93,6 @@ export function selectProductPhoto(button) {
   main.hidden = false;
   gallery.querySelector('.gallery-failed').hidden = true;
   main.closest('button').disabled = false;
-  const credit = gallery.querySelector('[data-gallery-credit]');
-  if (credit) {
-    credit.textContent = button.dataset.credit;
-    credit.hidden = !button.dataset.credit;
-  }
   for (const item of gallery.querySelectorAll('[data-action="gallery"]')) {
     item.setAttribute('aria-pressed', String(item === button));
   }
@@ -139,13 +125,13 @@ function renderSpecifications(product, categoryLabel) {
 
 function renderOffer(product, offer) {
   if (!offer) {
-    const estimate = productCatalogPrice(product);
-    if (estimate) return `<div class="buy-panel buy-panel-estimate">
-      <div><p class="product-page-price">${escape(currency.format(estimate.price))}</p><p class="price-note">Preço de referência</p></div>
+    const pricing = productCatalogPrice(product);
+    if (pricing) return `<div class="buy-panel">
+      <p class="product-page-price">${escape(currency.format(pricing.price))}</p>
       <button class="button primary buy-button" type="button" data-action="cart-add" data-id="${escape(product.id)}">Adicionar ao carrinho</button>
     </div>`;
     return `<div class="buy-panel buy-panel-unavailable">
-      <p>Preço a confirmar</p>
+      <p>${product.available === true ? 'Preço a confirmar' : 'Produto indisponível'}</p>
       <button class="button buy-button" type="button" disabled>Comprar</button>
     </div>`;
   }
@@ -170,7 +156,6 @@ function productBreadcrumb(product, categoryLabel) {
 
 export function renderProductPage(product, { categoryLabel = 'Colecionáveis', isFavorite = false, relatedHtml = '' } = {}) {
   const offer = productOffer(product);
-  const sourceUrl = product.source && httpsUrl(product.sourceUrl);
   const description = typeof product.description === 'string' ? product.description.trim() : '';
   const tags = [...new Set([product.franchise, product.brand].filter(Boolean))];
   return `<article class="product-page${offer ? ' product-page--purchasable' : ''}">
@@ -186,8 +171,9 @@ export function renderProductPage(product, { categoryLabel = 'Colecionáveis', i
         </div>
         <h1 id="product-title" tabindex="-1">${escape(product.name)}</h1>
         ${tags.length ? `<ul class="product-tags">${tags.map(tag => `<li>${escape(tag)}</li>`).join('')}</ul>` : ''}
+        ${product.available === true ? '<p class="product-availability">Pronta entrega</p>' : ''}
       </div>
-      ${renderGallery(product, sourceUrl)}
+      ${renderGallery(product)}
       <div class="product-summary">${renderOffer(product, offer)}</div>
     </div>
     <div class="product-details">
@@ -195,7 +181,6 @@ export function renderProductPage(product, { categoryLabel = 'Colecionáveis', i
         <h2 id="product-description-title">Sobre o produto</h2><p>${escape(description)}</p>
       </section>` : ''}
       ${renderSpecifications(product, categoryLabel)}
-      ${sourceUrl ? `<p class="product-source">Referência do catálogo <a href="${escape(sourceUrl)}" target="_blank" rel="noopener noreferrer">${escape(product.source)}</a></p>` : ''}
     </div>
     ${relatedHtml ? `<section class="related-products" aria-labelledby="related-products-title">
       <h2 id="related-products-title">Você também pode gostar</h2><div class="product-grid">${relatedHtml}</div>

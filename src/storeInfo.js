@@ -11,11 +11,12 @@ const consumerCode = {
 export const storeInfo = {
     brand: 'Modo Lenda',
     cnpj: '50.179.858/0001-33',
-    cnpjRegistryVerified: false,
+    cnpjRegistryVerified: true,
     legalName: null,
-    address: null,
-    email: null,
-    whatsapp: null,
+    address: 'Avenida dos Navegantes, 990, Loja 01 · Centro · Porto Seguro–BA · CEP 45810-000',
+    emails: ['sac@modolendageek.com'],
+    phone: '(73) 99149-0350',
+    phoneInternational: '+5573991490350',
     businessDetailsPending: true,
 };
 
@@ -27,7 +28,7 @@ export const policies = [
         sections: [
             {
                 title: 'Consulta de frete e prazos',
-                body: 'Quando as vendas forem abertas, consulte as opções para o seu CEP ao revisar o pedido. Confira o endereço, o total e o prazo de entrega antes de confirmar a compra. A cobertura de entrega e as modalidades de envio estão em definição.',
+                body: 'Os produtos marcados como pronta entrega estão em estoque. O valor do frete e o prazo de entrega dependem do CEP e da modalidade de envio. Confira as condições antes de confirmar a compra.',
             },
             {
                 title: 'Acompanhamento de pedidos',
@@ -85,8 +86,8 @@ export const policies = [
                 body: 'O checkout está indisponível. Caso o recurso seja habilitado, a política passará a detalhar os dados usados para processar pedidos, pagamentos e atendimento.',
             },
             {
-                title: 'Imagens e links de referência',
-                body: 'Algumas fotos são entregues por sites de fabricantes ou fornecedores. Os links de referência abrem páginas externas, sujeitas às políticas dos respectivos sites.',
+                title: 'Imagens do catálogo',
+                body: 'Algumas imagens do catálogo são entregues por serviços externos de mídia.',
             },
             {
                 title: 'Cookies opcionais',
@@ -119,11 +120,11 @@ export const policies = [
         sections: [
             {
                 title: 'Identificação da loja',
-                body: `Modo Lenda, CNPJ ${storeInfo.cnpj}. Razão social, endereço e canal de atendimento aguardam confirmação.`,
+                body: `Modo Lenda, CNPJ ${storeInfo.cnpj}. Endereço cadastral na ${storeInfo.address}. Atendimento pelo telefone ${storeInfo.phone} e e-mail ${storeInfo.emails[0]}.`,
             },
             {
                 title: 'Catálogo e disponibilidade',
-                body: 'O catálogo apresenta detalhes dos produtos. Em cada página, a loja informa quando a compra está indisponível. Os links de referência levam a páginas externas.',
+                body: 'O catálogo apresenta preço, disponibilidade e detalhes dos produtos. O selo Pronta entrega identifica os itens que estão em estoque.',
             },
             {
                 title: 'Ofertas e pagamentos',
@@ -145,7 +146,7 @@ export const helpItems = [
     },
     {
         question: 'Já posso finalizar uma compra?',
-        answer: 'Você pode navegar, salvar favoritos e montar o carrinho. Os valores de referência servem para estimar o subtotal. O pagamento online será disponibilizado após a integração do checkout.',
+        answer: 'Você pode adicionar ao carrinho os produtos com preço publicado. A finalização do pedido ficará disponível após a integração do pagamento online.',
     },
     {
         question: 'Onde vou consultar o preço do frete e o prazo?',
@@ -157,6 +158,6 @@ export const helpItems = [
     },
     {
         question: 'Onde encontro os dados da loja e do atendimento?',
-        answer: 'O CNPJ fica no rodapé do site e nos Termos de uso. Os dados cadastrais completos e o canal de atendimento aguardam confirmação.',
+        answer: 'O rodapé reúne CNPJ, endereço cadastral, telefone e e-mail da loja.',
     },
 ];
