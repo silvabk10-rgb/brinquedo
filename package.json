@@ -1,0 +1,7 @@
+{
+  "name": "modo-lenda",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "scripts": { "start": "node scripts/serve.mjs", "build": "node scripts/build.mjs" }
+}
