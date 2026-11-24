@@ -11,8 +11,9 @@ const port = Number(process.env.PORT || 4173);
 createServer(async (request, response) => {
   try {
     const path = decodeURIComponent(new URL(request.url, 'http://localhost').pathname).slice(1) || 'index.html';
-    const file = resolve(root, path);
-    if (!publicFiles.test(path) || !file.startsWith(root + sep) || !types[extname(file)]) {
+    const documentPath = path === 'produto' || path.startsWith('produto/') ? 'index.html' : path;
+    const file = resolve(root, documentPath);
+    if (!publicFiles.test(documentPath) || !file.startsWith(root + sep) || !types[extname(file)]) {
       response.writeHead(404).end('Página não encontrada');
       return;
     }

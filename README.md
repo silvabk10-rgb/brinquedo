@@ -1,17 +1,19 @@
 # Modo Lenda
 
-Vitrine geek em português do Brasil, com busca, filtros, favoritos, carrinho de demonstração e páginas de atendimento e políticas.
+Vitrine geek em português do Brasil, com páginas por produto, busca, filtros, favoritos e políticas de atendimento.
 
 ## Rodar localmente
 
-Com Node.js 20 ou superior, rode `node scripts/serve.mjs` e abra o endereço exibido no terminal. O projeto usa HTML, CSS e JavaScript estáticos.
+Com Node.js 20 ou superior, rode `npm start` e abra o endereço exibido no terminal. Para gerar o conteúdo estático, rode `npm run build`. Na Netlify, publique a pasta `dist`, que inclui o redirecionamento para as páginas `/produto/<id>/`.
 
-## Catálogo e checkout
+## Catálogo e fotos
 
-O catálogo de referência reúne produtos das lojas Cubo Nerd, Start Geek e Fantoy. Os registros identificam a origem e podem ser pesquisados na vitrine. Preços, disponibilidade e imagens oficiais devem ser confirmados com os fornecedores antes de ativar a venda de cada item.
+`public/catalog.json` contém o catálogo de referência e os links para os produtos de origem. O arquivo `public/product-details.json` mapeia dados complementares pela ID de cada produto.
 
-Apenas os produtos marcados para demonstração entram no carrinho. Favoritos e carrinho ficam no navegador. A simulação de checkout dispensa dados pessoais e não gera pedidos ou cobranças.
+- `photos` aceita uma lista de objetos com `url`, `alt` e, se necessário, `credit`. Use fotos autorizadas. Imagens locais podem ficar em `assets/`.
+- `galleryUrl` aponta para uma galeria externa de referência quando as fotos próprias estiverem indisponíveis.
+- `description` e `specifications` aceitam a descrição e uma lista de entradas `{ "label": "...", "value": "..." }`.
 
 ## Ativar vendas
 
-Confirme a razão social, o CNPJ, o endereço comercial e os canais de atendimento. Revise os textos de entrega, trocas, privacidade e termos com os dados e práticas da operação. Cadastre os itens com fotos autorizadas, estoque próprio e preços de venda. Integre frete, pagamentos e gestão de pedidos, e teste o fluxo completo antes de disponibilizá-lo ao público.
+Integre o checkout Stone/Pagar.me e cadastre os itens com estoque, preço e checkout de produção. O botão de compra exige, no mesmo registro, `available: true`, `price` maior que zero em reais e `checkoutUrl` HTTPS. Defina frete, dados cadastrais e operação dos pedidos antes de habilitar ofertas.

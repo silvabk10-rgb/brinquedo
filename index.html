@@ -2,35 +2,36 @@
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="description" content="Explore action figures, Funkos, estátuas e acessórios na vitrine de colecionáveis geek da Modo Lenda.">
   <meta name="theme-color" content="#141222">
-  <meta name="robots" content="noindex,nofollow">
+  <link rel="canonical" href="https://modolendageek.com/">
   <title>Modo Lenda | Figures e colecionáveis geek</title>
-  <link rel="icon" href="./assets/brand.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./assets/site.css">
-  <script type="module" src="./src/app.js"></script>
+  <link rel="icon" href="/assets/brand.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/site.css">
+  <link rel="stylesheet" href="/assets/product.css">
+  <script>if (location.pathname.startsWith("/produto/")) document.documentElement.dataset.entry = "product";</script>
+  <script type="module" src="/src/app.js"></script>
 </head>
 <body>
   <a class="skip" href="#conteudo">Ir para o conteúdo</a>
-  <div class="topbar"><div class="wrap top-inner"><span><svg aria-hidden="true"><use href="#spark"/></svg> Figures, colecionáveis e acessórios geek</span><a href="#ajuda">Central de ajuda</a></div></div>
+  <div class="topbar"><div class="wrap top-inner"><span><svg aria-hidden="true"><use href="#spark"/></svg> Figures, colecionáveis e acessórios geek</span><a href="/#ajuda">Central de ajuda</a></div></div>
   <header class="header">
     <div class="wrap header-main">
-      <a class="brand" href="#inicio" aria-label="Modo Lenda, início"><img src="./assets/brand.svg" width="44" height="44" alt=""><span>MODO<span>LENDA</span><small>COLECIONÁVEIS</small></span></a>
+      <a class="brand" href="/#inicio" aria-label="Modo Lenda, início"><img src="/assets/brand.svg" width="44" height="44" alt=""><span>MODO<span>LENDA</span><small>COLECIONÁVEIS</small></span></a>
       <form id="header-search" class="search" role="search"><label class="sr-only" for="hero-search">Buscar no catálogo</label><svg aria-hidden="true"><use href="#search"/></svg><input id="hero-search" name="q" type="search" placeholder="Busque por personagem, franquia ou produto" maxlength="100"><button type="submit">Buscar</button></form>
       <div class="header-actions">
         <button class="icon-button" data-action="favorites" title="Favoritos" aria-label="Favoritos"><svg aria-hidden="true"><use href="#heart"/></svg><span id="favorites-count" class="count" hidden>0</span></button>
-        <button class="icon-button" data-action="cart" title="Carrinho" aria-label="Carrinho"><svg aria-hidden="true"><use href="#bag"/></svg><span id="cart-count" class="count" hidden>0</span></button>
       </div>
     </div>
     <nav class="wrap nav" aria-label="Menu principal">
-      <a class="nav-catalog" href="#catalogo"><svg aria-hidden="true"><use href="#grid"/></svg> Todo o catálogo</a>
-      <a href="#catalogo?categoria=action-figures">Action figures</a>
-      <a href="#catalogo?categoria=funko-pop">Funko Pop!</a>
-      <a href="#catalogo?categoria=estatuas">Estátuas</a>
-      <a href="#catalogo?categoria=acessorios">Acessórios</a>
-      <a href="#catalogo?categoria=pelucias">Pelúcias</a>
-      <a href="#universos">Universos</a>
+      <a class="nav-catalog" href="/#catalogo"><svg aria-hidden="true"><use href="#grid"/></svg> Todo o catálogo</a>
+      <a href="/#catalogo?categoria=action-figures">Action figures</a>
+      <a href="/#catalogo?categoria=funko-pop">Funko Pop!</a>
+      <a href="/#catalogo?categoria=estatuas">Estátuas</a>
+      <a href="/#catalogo?categoria=acessorios">Acessórios</a>
+      <a href="/#catalogo?categoria=pelucias">Pelúcias</a>
+      <a href="/#universos">Universos</a>
     </nav>
   </header>
 
@@ -39,10 +40,10 @@
       <section id="inicio" class="hero">
         <div class="wrap hero-inner">
           <div class="hero-copy">
-            <p class="eyebrow"><span></span> CULTURA GEEK EM EXPOSIÇÃO</p>
-            <h1>Colecione seus <em>universos.</em></h1>
-            <p>Do seu anime favorito aos clássicos dos games. Encontre a próxima peça da sua coleção.</p>
-            <a class="button primary" href="#catalogo">Explorar catálogo <svg aria-hidden="true"><use href="#grid"/></svg></a>
+            <p class="eyebrow"><span></span> FIGURES E COLECIONÁVEIS</p>
+            <h1>O próximo item da <em>sua coleção.</em></h1>
+            <p>Encontre action figures, Funkos, estátuas e acessórios dos universos que você coleciona.</p>
+            <a class="button primary" href="/#catalogo">Explorar catálogo <svg aria-hidden="true"><use href="#grid"/></svg></a>
           </div>
         </div>
       </section>
@@ -53,32 +54,33 @@
       </div></div>
       <div class="wrap home-content">
         <section aria-labelledby="universos" class="section">
-          <div class="section-head"><div><p class="kicker">ENCONTRE A SUA PRÓXIMA PEÇA</p><h2 id="universos" tabindex="-1">Explore a coleção</h2></div><a class="text-link" href="#catalogo">Ver todo o catálogo</a></div>
+          <div class="section-head"><div><p class="kicker">CATEGORIAS</p><h2 id="universos" tabindex="-1">Explore por categoria</h2></div><a class="text-link" href="/#catalogo">Ver todo o catálogo</a></div>
           <div class="categories">
-            <a href="#catalogo?categoria=action-figures" class="category cat-figure"><span>Action figures</span></a>
-            <a href="#catalogo?categoria=funko-pop" class="category cat-pop"><span>Funko Pop!</span></a>
-            <a href="#catalogo?categoria=estatuas" class="category cat-statue"><span>Estátuas</span></a>
-            <a href="#catalogo?categoria=acessorios" class="category cat-accessory"><span>Acessórios</span></a>
+            <a href="/#catalogo?categoria=action-figures" class="category cat-figure"><span>Action figures</span></a>
+            <a href="/#catalogo?categoria=funko-pop" class="category cat-pop"><span>Funko Pop!</span></a>
+            <a href="/#catalogo?categoria=estatuas" class="category cat-statue"><span>Estátuas</span></a>
+            <a href="/#catalogo?categoria=acessorios" class="category cat-accessory"><span>Acessórios</span></a>
           </div>
           <nav class="universes" aria-label="Filtrar por franquia">
-            <a href="#catalogo?q=Naruto">Naruto</a><a href="#catalogo?q=One+Piece">One Piece</a><a href="#catalogo?q=Dragon+Ball">Dragon Ball</a><a href="#catalogo?q=Marvel">Marvel</a><a href="#catalogo?q=Pok%C3%A9mon">Pokémon</a><a href="#catalogo?q=Star+Wars">Star Wars</a><a href="#catalogo?categoria=pelucias">Pelúcias</a>
+            <a href="/#catalogo?q=Naruto">Naruto</a><a href="/#catalogo?q=One+Piece">One Piece</a><a href="/#catalogo?q=Dragon+Ball">Dragon Ball</a><a href="/#catalogo?q=Marvel">Marvel</a><a href="/#catalogo?q=Pok%C3%A9mon">Pokémon</a><a href="/#catalogo?q=Star+Wars">Star Wars</a><a href="/#catalogo?categoria=pelucias">Pelúcias</a>
           </nav>
         </section>
         <section class="section highlights" aria-labelledby="highlights-title">
-          <div class="section-head"><div><p class="kicker">COLEÇÃO CONCEITO</p><h2 id="highlights-title">Destaques Modo Lenda</h2></div><span class="section-note">Peças ilustrativas para explorar a loja</span></div>
+          <div class="section-head"><div><h2 id="highlights-title">Destaques da coleção</h2></div><a class="text-link" href="/#catalogo">Ver todos</a></div>
           <div id="featured-products" class="product-grid"></div>
         </section>
         <section class="section editorial" aria-label="Coleções de anime e acessórios">
-          <a href="#catalogo?q=anime" class="editorial-card editorial-anime"><small>COLECIONÁVEIS DE ANIME</small><strong>Do anime<br>à estante.</strong><span>Explorar universo anime</span></a>
-          <a href="#catalogo?categoria=acessorios" class="editorial-card editorial-gift"><small>ACESSÓRIOS GEEK</small><strong>Para levar<br>com você.</strong><span>Explorar acessórios</span></a>
+          <a href="/#catalogo?q=anime" class="editorial-card editorial-anime"><small>COLECIONÁVEIS DE ANIME</small><strong>Do anime<br>à estante.</strong><span>Explorar universo anime</span></a>
+          <a href="/#catalogo?categoria=acessorios" class="editorial-card editorial-gift"><small>ACESSÓRIOS GEEK</small><strong>Para levar<br>com você.</strong><span>Explorar acessórios</span></a>
         </section>
       </div>
     </div>
 
     <section id="catalog-view" class="wrap catalog-view" hidden aria-labelledby="catalog-title">
-      <a class="breadcrumb" href="#inicio">Início</a>
+      <a class="breadcrumb" href="/#inicio">Início</a>
       <div class="section-head"><div><p class="kicker">MODO LENDA</p><h1 id="catalog-title" tabindex="-1">Catálogo</h1></div></div>
-      <p class="catalog-intro">Explore a seleção e salve suas peças favoritas. Os itens de referência estão em curadoria e aguardam confirmação de disponibilidade.</p>
+      <p class="catalog-intro">Busque por personagem, franquia ou categoria e salve suas peças favoritas.</p>
+      <details class="filter-panel" open><summary>Filtrar e ordenar</summary>
       <form id="filters" class="filters" role="search" aria-label="Filtros do catálogo">
         <label>Busca <input id="filter-query" name="q" type="search" placeholder="Personagem, franquia ou produto" maxlength="100"></label>
         <label>Categoria <select name="categoria" id="filter-category"><option value="">Todas as categorias</option></select></label>
@@ -87,27 +89,30 @@
         <label>Ordenar <select name="ordem" id="filter-sort"><option value="">Relevância</option><option value="nome">Nome A–Z</option><option value="nome-desc">Nome Z–A</option></select></label>
         <button class="button outline" type="submit">Filtrar</button>
       </form>
-      <div class="results-bar"><span id="catalog-count" role="status"></span><a id="clear-filters" class="text-link" href="#catalogo">Limpar filtros</a></div>
+      </details>
+      <div class="results-bar"><span id="catalog-count" role="status"></span><a id="clear-filters" class="text-link" href="/#catalogo">Limpar filtros</a></div>
       <div id="catalog-products" class="product-grid"></div>
       <div id="catalog-pagination" class="pagination" aria-label="Paginação do catálogo"></div>
     </section>
 
+    <section id="product-view" class="wrap" hidden></section>
+
     <section id="help-view" class="wrap info-view" hidden aria-labelledby="help-title">
-      <a class="breadcrumb" href="#inicio">Início</a><h1 id="help-title" tabindex="-1">Central de ajuda</h1><div id="help-content"></div>
+      <a class="breadcrumb" href="/#inicio">Início</a><h1 id="help-title" tabindex="-1">Central de ajuda</h1><div id="help-content"></div>
     </section>
     <article id="policy-view" class="wrap info-view" hidden aria-labelledby="policy-title">
-      <a class="breadcrumb" href="#ajuda">Central de ajuda</a><h1 id="policy-title" tabindex="-1"></h1><div id="policy-content"></div>
+      <a class="breadcrumb" href="/#ajuda">Central de ajuda</a><h1 id="policy-title" tabindex="-1"></h1><div id="policy-content"></div>
     </article>
   </main>
 
   <footer class="footer">
     <div class="wrap footer-inner">
-      <div><a class="brand" href="#inicio" aria-label="Modo Lenda, início"><img src="./assets/brand.svg" width="44" height="44" alt=""><span>MODO<span>LENDA</span><small>COLECIONÁVEIS</small></span></a><p>Figures, colecionáveis e acessórios para quem vive cultura geek.</p></div>
-      <div><h2>Explore</h2><a href="#catalogo">Catálogo</a><a href="#universos">Coleções</a><button data-action="favorites">Meus favoritos</button></div>
-      <div><h2>Atendimento</h2><a href="#ajuda">Central de ajuda</a><a href="#politica/entrega">Entrega e frete</a><a href="#politica/trocas">Trocas e devoluções</a></div>
-      <div><h2>Institucional</h2><a href="#politica/privacidade">Privacidade e cookies</a><a href="#politica/termos">Termos de uso</a><button data-action="company">Dados da loja</button></div>
+      <div><a class="brand" href="/#inicio" aria-label="Modo Lenda, início"><img src="/assets/brand.svg" width="44" height="44" alt=""><span>MODO<span>LENDA</span><small>COLECIONÁVEIS</small></span></a><p>Figures, colecionáveis e acessórios geek.</p><p class="footer-company">CNPJ <strong>50.179.858/0001-33</strong></p></div>
+      <div><h2>Explore</h2><a href="/#catalogo">Catálogo</a><a href="/#universos">Coleções</a><button data-action="favorites">Meus favoritos</button></div>
+      <div><h2>Atendimento</h2><a href="/#ajuda">Central de ajuda</a><a href="/#politica/entrega">Entrega e frete</a><a href="/#politica/trocas">Trocas e devoluções</a></div>
+      <div><h2>Institucional</h2><a href="/#politica/privacidade">Privacidade e cookies</a><a href="/#politica/termos">Termos de uso</a><button data-action="company">Dados da loja</button></div>
     </div>
-    <div class="wrap footer-bottom"><span>© Modo Lenda</span><span>Vitrine em pré-lançamento</span></div>
+    <div class="wrap footer-bottom"><span>© Modo Lenda</span></div>
   </footer>
 
   <dialog id="dialog" aria-labelledby="dialog-title"><div class="dialog-header"><h2 id="dialog-title"></h2><button class="icon-button close" type="button" aria-label="Fechar" data-action="close"><svg aria-hidden="true"><use href="#close"/></svg></button></div><div id="dialog-body" class="dialog-body"></div></dialog>
@@ -115,7 +120,6 @@
   <svg xmlns="http://www.w3.org/2000/svg" class="icon-library" aria-hidden="true">
     <symbol id="search" viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.3"/><path d="m16 16 4 4"/></symbol>
     <symbol id="heart" viewBox="0 0 24 24"><path d="M20.8 9.3c0 4.4-8.8 9.4-8.8 9.4S3.2 13.7 3.2 9.3a4.6 4.6 0 0 1 8.8-2 4.6 4.6 0 0 1 8.8 2Z"/></symbol>
-    <symbol id="bag" viewBox="0 0 24 24"><path d="M5 8h14l1 12H4L5 8Zm4 2V6a3 3 0 1 1 6 0v4"/></symbol>
     <symbol id="grid" viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></symbol>
     <symbol id="box" viewBox="0 0 24 24"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3Zm0 9 8-4.5M4 7.5l8 4.5v9M8 5.2l8 4.6"/></symbol>
     <symbol id="spark" viewBox="0 0 24 24"><path d="M12 3c.7 5.4 3.6 8.3 9 9-5.4.7-8.3 3.6-9 9-.7-5.4-3.6-8.3-9-9 5.4-.7 8.3-3.6 9-9Z"/></symbol>

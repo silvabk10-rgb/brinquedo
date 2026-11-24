@@ -77,12 +77,12 @@ export const policies = [
         intro: 'Saiba como os recursos desta vitrine funcionam no navegador e conheça os seus direitos sobre dados pessoais.',
         sections: [
             {
-                title: 'Carrinho e preferências',
-                body: 'A vitrine pode usar o armazenamento do navegador para lembrar o carrinho e os favoritos entre visitas no mesmo dispositivo. Você pode apagar esses registros nas configurações de dados do site do seu navegador.',
+                title: 'Lista de favoritos',
+                body: 'O navegador armazena a sua lista de favoritos no dispositivo para que ela fique disponível entre visitas. Você pode apagar esses registros nas configurações de dados do site do seu navegador.',
             },
             {
                 title: 'Pedidos e atendimento',
-                body: 'Nesta fase, a vitrine está aberta para navegação e seleção de produtos. Antes de receber dados para pedidos, pagamentos ou atendimento, o site deve identificar o controlador e informar quais dados são necessários, por que serão usados, por quanto tempo serão guardados e com quem poderão ser compartilhados.',
+                body: 'O checkout está indisponível. Caso o recurso seja habilitado, a política passará a detalhar os dados usados para processar pedidos, pagamentos e atendimento.',
             },
             {
                 title: 'Cookies opcionais',
@@ -115,11 +115,11 @@ export const policies = [
         sections: [
             {
                 title: 'Identificação da loja',
-                body: `CNPJ informado para este projeto ${storeInfo.cnpj}. A confirmação cadastral, a razão social, o endereço e o canal oficial de atendimento estão pendentes.`,
+                body: `Modo Lenda, CNPJ ${storeInfo.cnpj}. Razão social, endereço e canal de atendimento aguardam confirmação.`,
             },
             {
-                title: 'Catálogo e carrinho',
-                body: 'O catálogo pode incluir produtos de referência com disponibilidade, preço comercial e fotos de fornecedor em confirmação. Adicionar um item ao carrinho serve para organizar a seleção. A contratação ocorre somente após a apresentação da oferta completa e a confirmação de compra.',
+                title: 'Catálogo e disponibilidade',
+                body: 'O catálogo apresenta detalhes dos produtos. Em cada página, a loja informa quando a compra está indisponível. Os links de referência levam a páginas externas.',
             },
             {
                 title: 'Ofertas e pagamentos',
@@ -141,7 +141,7 @@ export const helpItems = [
     },
     {
         question: 'Já posso finalizar uma compra?',
-        answer: 'A vitrine já permite explorar os produtos e montar sua seleção. A confirmação de estoque, os preços comerciais e o pagamento ainda serão disponibilizados.',
+        answer: 'O checkout está indisponível. Você já pode explorar os produtos e salvá-los na sua lista de favoritos.',
     },
     {
         question: 'Onde vou consultar o preço do frete e o prazo?',
@@ -153,6 +153,6 @@ export const helpItems = [
     },
     {
         question: 'Onde encontro os dados da loja e do atendimento?',
-        answer: 'Consulte os Termos de uso para ver o CNPJ informado. Os dados cadastrais completos e o canal oficial de atendimento estão em confirmação para a abertura das vendas.',
+        answer: 'O CNPJ fica no rodapé do site e nos Termos de uso. Os dados cadastrais completos e o canal de atendimento aguardam confirmação.',
     },
 ];
