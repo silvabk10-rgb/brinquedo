@@ -1,6 +1,6 @@
 # Modo Lenda
 
-Vitrine geek em português do Brasil, com páginas por produto, busca, filtros, favoritos e políticas de atendimento.
+Loja geek em português do Brasil, com páginas por produto, busca, filtros, favoritos, carrinho e políticas de atendimento.
 
 ## Rodar localmente
 
@@ -10,9 +10,12 @@ Com Node.js 20 ou superior, rode `npm start` e abra o endereço exibido no termi
 
 `public/catalog.json` contém o catálogo de referência e os links para os produtos de origem. O arquivo `public/product-details.json` mapeia dados complementares pela ID de cada produto.
 
-- `photos` aceita uma lista de objetos com `url`, `alt` e, se necessário, `credit`. Use fotos autorizadas. Imagens locais podem ficar em `assets/`.
+- `photos` aceita uma lista de objetos com `url`, `alt` e `credit`. O catálogo mostra as imagens de referência com a respectiva origem. Imagens locais da loja podem ficar em `assets/`.
 - `galleryUrl` aponta para uma galeria externa de referência quando as fotos próprias estiverem indisponíveis.
 - `description` e `specifications` aceitam a descrição e uma lista de entradas `{ "label": "...", "value": "..." }`.
+- `referencePrice` identifica um valor observado na loja de referência. No carrinho, esse valor compõe o subtotal estimado.
+
+Rode `npm run export:catalog` para gerar `outputs/modo-lenda-catalogo.csv` com preços, imagens, especificações e origem dos produtos.
 
 ## Ativar vendas
 

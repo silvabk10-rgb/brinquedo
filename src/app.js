@@ -1,6 +1,7 @@
 import { createFavorites, formatPrice } from './commerce.js';
-import { productImages, productOffer, renderProductPage, renderMissingProduct, renderProductLoading, selectProductPhoto } from './productPage.js';
+import { productImages, productCatalogPrice, renderProductPage, renderMissingProduct, renderProductLoading, selectProductPhoto } from './productPage.js';
 import { storeInfo, policies, helpItems } from './storeInfo.js';
+import { createCart, renderCart } from './cart.js';
 
 const categories = {
   'action-figures': 'Action figures',
@@ -21,6 +22,7 @@ const sort = new Intl.Collator('pt-BR', { sensitivity: 'base', numeric: true });
 const number = new Intl.NumberFormat('pt-BR');
 const filterOptions = new Map();
 const favorites = createFavorites();
+const cart = createCart();
 const compact = window.matchMedia('(max-width: 680px)');
 let products = [];
 let productById = new Map();
@@ -49,10 +51,12 @@ function showToast(message) {
 }
 
 function updateCounts() {
-  const count = favorites.get().filter(id => !id.startsWith('ml-')).length;
-  const badge = $('#favorites-count');
-  badge.hidden = !count;
-  badge.textContent = String(count);
+  const counts = { '#favorites-count': favorites.get().filter(id => !id.startsWith('ml-')).length, '#cart-count': cart.count() };
+  for (const [selector, count] of Object.entries(counts)) {
+    const badge = $(selector);
+    badge.hidden = !count;
+    badge.textContent = String(count);
+  }
 }
 
 function categoryLabel(product) {
@@ -71,19 +75,20 @@ function favoriteButton(product) {
 function productCard(product) {
   const href = escape(productLink(product));
   const name = escape(product.name);
-  const offer = productOffer(product);
+  const offer = productCatalogPrice(product);
   const image = productImages(product)[0];
   const meta = [categoryLabel(product), product.franchise].filter(Boolean).join(' · ');
+  const placeholder = `<span class="product-placeholder" data-category="${escape(product.category)}" aria-hidden="true" ${image ? 'hidden' : ''}>${icon('box')}</span>`;
   const photo = image
-    ? `<img src="${escape(image.url)}" alt="" width="560" height="560" loading="lazy" decoding="async" referrerpolicy="no-referrer">`
-    : `<span class="product-placeholder" data-category="${escape(product.category)}" aria-hidden="true">${icon('box')}</span>`;
+    ? `<img src="${escape(image.url)}" alt="" width="560" height="560" loading="lazy" decoding="async" referrerpolicy="no-referrer">${placeholder}`
+    : placeholder;
   return `<article class="product-card">
     <a class="product-media reference-media${image ? '' : ' is-missing'}" href="${href}" aria-label="Ver ${name}">${photo}</a>
     ${favoriteButton(product)}
     <div class="product-copy">
       <p class="product-meta">${escape(meta)}</p>
       <h3 class="product-name"><a href="${href}">${name}</a></h3>
-      ${offer ? `<div class="price">${formatPrice(offer.price)}</div>` : ''}
+      ${offer ? `<div class="card-pricing"><strong>${formatPrice(offer.price)}</strong>${offer.reference ? '<small>Preço de referência</small>' : ''}</div>` : '<p class="card-pricing card-pricing-pending">Preço a confirmar</p>'}
       <a class="button outline" href="${href}">Ver produto</a>
     </div>
   </article>`;
@@ -133,7 +138,7 @@ function catalogResults(params) {
   const category = validOption('categoria');
   const franchise = validOption('franquia');
   const brand = validOption('marca');
-  const order = ['nome', 'nome-desc'].includes(params.get('ordem')) ? params.get('ordem') : '';
+  const order = ['nome', 'nome-desc', 'menor-preco', 'maior-preco'].includes(params.get('ordem')) ? params.get('ordem') : '';
   const filtered = products.filter(product => {
     if (category && product.category !== category) return false;
     if (franchise && product.franchise !== franchise) return false;
@@ -141,7 +146,19 @@ function catalogResults(params) {
     return terms.every(term => product.searchable.includes(term));
   });
 
-  if (order) filtered.sort((first, second) => sort.compare(first.name, second.name) * (order === 'nome-desc' ? -1 : 1));
+  if (order === 'nome' || order === 'nome-desc') {
+    filtered.sort((first, second) => sort.compare(first.name, second.name) * (order === 'nome-desc' ? -1 : 1));
+  } else if (order) {
+    const direction = order === 'menor-preco' ? 1 : -1;
+    filtered.sort((first, second) => {
+      const a = productCatalogPrice(first)?.price;
+      const b = productCatalogPrice(second)?.price;
+      if (a === undefined || b === undefined) return Number(a === undefined) - Number(b === undefined);
+      return (a - b) * direction || sort.compare(first.name, second.name);
+    });
+  } else {
+    filtered.sort((first, second) => Number(Boolean(second.photos?.length)) - Number(Boolean(first.photos?.length)));
+  }
   return { query, category, franchise, brand, order, filtered };
 }
 
@@ -199,9 +216,13 @@ function renderFeatured() {
     return;
   }
   const featuredCategories = ['action-figures', 'funko-pop', 'estatuas', 'acessorios', 'pelucias', 'decoracao'];
-  const withPhotos = products.filter(product => productImages(product).length > 0);
-  const priority = [...withPhotos, ...products];
-  const featured = featuredCategories.map(category => priority.find(product => product.category === category)).filter(Boolean);
+  const withPhotos = products.filter(product => product.photos?.length && productCatalogPrice(product));
+  const featured = featuredCategories.map(category => withPhotos.find(product => product.category === category)).filter(Boolean);
+  for (const product of withPhotos) {
+    if (featured.length >= 8) break;
+    if (!featured.includes(product)) featured.push(product);
+  }
+  if (!featured.length) featured.push(...products.slice(0, 4));
   grid.innerHTML = featured.map(productCard).join('');
 }
 
@@ -284,9 +305,20 @@ function renderRoute({ focus = true } = {}) {
 
 function showDialog(title, content, kind) {
   activeDialog = kind;
+  dialog.dataset.kind = kind;
   $('#dialog-title').textContent = title;
   dialogBody.innerHTML = content;
   if (!dialog.open) dialog.showModal();
+}
+
+function showCart() {
+  showDialog('Carrinho', renderCart(cart.get(), productById, { loading: catalogStatus === 'loading' }), 'cart');
+}
+
+function showGallery(control) {
+  const photo = control.querySelector('[data-gallery-main]');
+  if (!photo || photo.hidden) return;
+  showDialog('Foto do produto', `<img class="dialog-product-photo" src="${escape(photo.currentSrc || photo.src)}" alt="${escape(photo.alt)}" referrerpolicy="no-referrer">`, 'photo');
 }
 
 function showFavorites() {
@@ -330,9 +362,11 @@ async function fetchJson(path) {
 
 function productDetails(product, details) {
   const data = Object.hasOwn(details, product.id) ? details[product.id] : null;
+  const price = Number.isFinite(data?.referencePrice) && data.referencePrice > 0 ? data.referencePrice : product.referencePrice;
   return {
     ...product,
-    photos: data?.photos,
+    referencePrice: price,
+    photos: productImages({ ...product, photos: data?.photos }),
     description: data?.description,
     specifications: data?.specifications,
     galleryUrl: data?.galleryUrl,
@@ -364,6 +398,7 @@ function loadCatalog() {
       catalogRequest = null;
       renderRoute({ focus: false });
       if (activeDialog === 'favorites') showFavorites();
+      if (activeDialog === 'cart') showCart();
       updateCounts();
     });
   return catalogRequest;
@@ -376,7 +411,21 @@ document.addEventListener('click', event => {
   switch (action) {
     case 'company': showCompany(); break;
     case 'favorites': showFavorites(); break;
+    case 'cart': showCart(); break;
+    case 'cart-add':
+      if (productById.has(id) && productCatalogPrice(productById.get(id)) && cart.add(id) !== null) {
+        updateCounts();
+        showCart();
+      }
+      break;
+    case 'cart-remove':
+      cart.remove(id);
+      updateCounts();
+      showCart();
+      (dialogBody.querySelector('[data-cart-quantity], a') ?? dialog.querySelector('.close')).focus();
+      break;
     case 'gallery': selectProductPhoto(control); break;
+    case 'zoom': showGallery(control); break;
     case 'favorite': {
       if (!productById.has(id)) break;
       const added = favorites.toggle(id);
@@ -393,6 +442,31 @@ document.addEventListener('click', event => {
     case 'close': if (dialog.open) dialog.close(); break;
   }
 });
+
+document.addEventListener('change', event => {
+  const field = event.target;
+  if (!field.matches('[data-cart-quantity][data-id]')) return;
+  cart.setQuantity(field.dataset.id, field.valueAsNumber);
+  updateCounts();
+  showCart();
+  const next = [...dialogBody.querySelectorAll('[data-cart-quantity]')].find(input => input.dataset.id === field.dataset.id);
+  (next ?? dialog.querySelector('.close')).focus();
+});
+
+document.addEventListener('error', event => {
+  const photo = event.target;
+  if (!photo.matches?.('img')) return;
+  const card = photo.closest('.product-media');
+  if (card) {
+    photo.hidden = true;
+    card.querySelector('.product-placeholder').hidden = false;
+  } else if (photo.matches('[data-gallery-main]')) {
+    photo.hidden = true;
+    const button = photo.closest('button');
+    button.querySelector('.gallery-failed').hidden = false;
+    button.disabled = true;
+  }
+}, true);
 
 document.addEventListener('submit', event => {
   if (!event.target.matches('#header-search, #filters')) return;
@@ -414,6 +488,7 @@ window.addEventListener('storage', () => {
   const visibleFavoriteIds = new Set([...document.querySelectorAll('[data-action="favorite"][aria-pressed]')].map(button => button.dataset.id));
   for (const id of visibleFavoriteIds) if (productById.has(id)) updateFavoriteControls(id);
   if (activeDialog === 'favorites') showFavorites();
+  if (activeDialog === 'cart') showCart();
 });
 
 function setFilterPanel() {

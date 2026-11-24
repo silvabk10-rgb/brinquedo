@@ -424,6 +424,9 @@ html[data-entry="product"] #home-view { display: none; }
 }
 .product-name button:hover, .product-name a:hover, .row-link:hover, .inline-button:hover { text-decoration: underline; text-underline-offset: 3px; }
 .price { margin-bottom: 8px; font-size: 1.18rem; font-weight: 850; }
+.card-pricing { display: grid; gap: 1px; margin: 1px 0 12px; }
+.card-pricing strong { color: var(--ink); font-size: clamp(1rem, 2vw, 1.32rem); font-weight: 850; letter-spacing: -.035em; line-height: 1.2; }
+.card-pricing small, .card-pricing-pending { color: var(--muted); font-size: .78rem; font-weight: 650; }
 .product-status { margin-bottom: 10px; color: var(--muted); font-size: .86rem; }
 .product-copy > .button { align-self: stretch; margin-top: auto; }
 

@@ -77,12 +77,16 @@ export const policies = [
         intro: 'Saiba como os recursos desta vitrine funcionam no navegador e conheça os seus direitos sobre dados pessoais.',
         sections: [
             {
-                title: 'Lista de favoritos',
-                body: 'O navegador armazena a sua lista de favoritos no dispositivo para que ela fique disponível entre visitas. Você pode apagar esses registros nas configurações de dados do site do seu navegador.',
+                title: 'Favoritos e carrinho',
+                body: 'O navegador armazena os favoritos, os itens e as quantidades do carrinho no seu dispositivo para manter sua seleção entre visitas. Você pode apagar esses registros nas configurações de dados do site do seu navegador.',
             },
             {
                 title: 'Pedidos e atendimento',
                 body: 'O checkout está indisponível. Caso o recurso seja habilitado, a política passará a detalhar os dados usados para processar pedidos, pagamentos e atendimento.',
+            },
+            {
+                title: 'Imagens e links de referência',
+                body: 'Algumas fotos são entregues por sites de fabricantes ou fornecedores. Os links de referência abrem páginas externas, sujeitas às políticas dos respectivos sites.',
             },
             {
                 title: 'Cookies opcionais',
@@ -141,7 +145,7 @@ export const helpItems = [
     },
     {
         question: 'Já posso finalizar uma compra?',
-        answer: 'O checkout está indisponível. Você já pode explorar os produtos e salvá-los na sua lista de favoritos.',
+        answer: 'Você pode navegar, salvar favoritos e montar o carrinho. Os valores de referência servem para estimar o subtotal. O pagamento online será disponibilizado após a integração do checkout.',
     },
     {
         question: 'Onde vou consultar o preço do frete e o prazo?',

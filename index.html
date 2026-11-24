@@ -10,6 +10,7 @@
   <link rel="icon" href="/assets/brand.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/assets/site.css">
   <link rel="stylesheet" href="/assets/product.css">
+  <link rel="stylesheet" href="/assets/cart.css">
   <script>if (location.pathname.startsWith("/produto/")) document.documentElement.dataset.entry = "product";</script>
   <script type="module" src="/src/app.js"></script>
 </head>
@@ -22,6 +23,7 @@
       <form id="header-search" class="search" role="search"><label class="sr-only" for="hero-search">Buscar no catálogo</label><svg aria-hidden="true"><use href="#search"/></svg><input id="hero-search" name="q" type="search" placeholder="Busque por personagem, franquia ou produto" maxlength="100"><button type="submit">Buscar</button></form>
       <div class="header-actions">
         <button class="icon-button" data-action="favorites" title="Favoritos" aria-label="Favoritos"><svg aria-hidden="true"><use href="#heart"/></svg><span id="favorites-count" class="count" hidden>0</span></button>
+        <button class="icon-button" data-action="cart" title="Carrinho" aria-label="Carrinho"><svg aria-hidden="true"><use href="#bag"/></svg><span id="cart-count" class="count" hidden>0</span></button>
       </div>
     </div>
     <nav class="wrap nav" aria-label="Menu principal">
@@ -79,14 +81,14 @@
     <section id="catalog-view" class="wrap catalog-view" hidden aria-labelledby="catalog-title">
       <a class="breadcrumb" href="/#inicio">Início</a>
       <div class="section-head"><div><p class="kicker">MODO LENDA</p><h1 id="catalog-title" tabindex="-1">Catálogo</h1></div></div>
-      <p class="catalog-intro">Busque por personagem, franquia ou categoria e salve suas peças favoritas.</p>
+      <p class="catalog-intro">Explore fotos e preços de referência por personagem, franquia ou categoria.</p>
       <details class="filter-panel" open><summary>Filtrar e ordenar</summary>
       <form id="filters" class="filters" role="search" aria-label="Filtros do catálogo">
         <label>Busca <input id="filter-query" name="q" type="search" placeholder="Personagem, franquia ou produto" maxlength="100"></label>
         <label>Categoria <select name="categoria" id="filter-category"><option value="">Todas as categorias</option></select></label>
         <label>Universo <select name="franquia" id="filter-franchise"><option value="">Todos os universos</option></select></label>
         <label>Marca <select name="marca" id="filter-brand"><option value="">Todas as marcas</option></select></label>
-        <label>Ordenar <select name="ordem" id="filter-sort"><option value="">Relevância</option><option value="nome">Nome A–Z</option><option value="nome-desc">Nome Z–A</option></select></label>
+        <label>Ordenar <select name="ordem" id="filter-sort"><option value="">Destaques</option><option value="menor-preco">Menor preço</option><option value="maior-preco">Maior preço</option><option value="nome">Nome A–Z</option><option value="nome-desc">Nome Z–A</option></select></label>
         <button class="button outline" type="submit">Filtrar</button>
       </form>
       </details>
@@ -120,6 +122,7 @@
   <svg xmlns="http://www.w3.org/2000/svg" class="icon-library" aria-hidden="true">
     <symbol id="search" viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.3"/><path d="m16 16 4 4"/></symbol>
     <symbol id="heart" viewBox="0 0 24 24"><path d="M20.8 9.3c0 4.4-8.8 9.4-8.8 9.4S3.2 13.7 3.2 9.3a4.6 4.6 0 0 1 8.8-2 4.6 4.6 0 0 1 8.8 2Z"/></symbol>
+    <symbol id="bag" viewBox="0 0 24 24"><path d="M5 8h14l1 12H4L5 8Zm4 2V6a3 3 0 1 1 6 0v4"/></symbol>
     <symbol id="grid" viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></symbol>
     <symbol id="box" viewBox="0 0 24 24"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3Zm0 9 8-4.5M4 7.5l8 4.5v9M8 5.2l8 4.6"/></symbol>
     <symbol id="spark" viewBox="0 0 24 24"><path d="M12 3c.7 5.4 3.6 8.3 9 9-5.4.7-8.3 3.6-9 9-.7-5.4-3.6-8.3-9-9 5.4-.7 8.3-3.6 9-9Z"/></symbol>

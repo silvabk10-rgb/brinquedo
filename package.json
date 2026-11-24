@@ -3,5 +3,9 @@
   "private": true,
   "type": "module",
   "engines": { "node": ">=20" },
-  "scripts": { "start": "node scripts/serve.mjs", "build": "node scripts/build.mjs" }
+  "scripts": {
+    "start": "node scripts/serve.mjs",
+    "build": "node scripts/build.mjs",
+    "export:catalog": "node scripts/export-catalog.mjs"
+  }
 }
